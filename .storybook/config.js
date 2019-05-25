@@ -5,7 +5,6 @@ import { themes } from '@storybook/theming';
 
 const req = require.context('../src', true, /.stories.tsx$/);
 
-
 addParameters({
   info: {
 
