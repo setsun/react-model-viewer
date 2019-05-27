@@ -1,14 +1,16 @@
 {
   "name": "react-three-player",
   "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A Three.js model viewer & animation player",
+  "main": "dist/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --config webpack.config.js --watch",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && tsc",
-    "storybook": "start-storybook -p 6006"
+    "storybook": "start-storybook -p 6006",
+    "deploy-storybook": "storybook-to-ghpages"
   },
-  "author": "",
+  "repository": "https://github.com/Setsun/react-three-player",
+  "author": "Setsun <setsun@setsun.io>",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.4.4",

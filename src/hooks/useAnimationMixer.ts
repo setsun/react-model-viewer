@@ -81,10 +81,8 @@ const useAnimationMixer = (model) => {
 
     startAnimationLoop(mixer, (delta) => {
       timeElapsed += delta;
-      const timestamp = timeElapsed % maxDuration;
-      const progress = (timestamp / maxDuration) * 100;
-
-      setProgress(progress);
+      timeElapsed = timeElapsed % maxDuration;
+      setProgress((timeElapsed / maxDuration) * 100);
     });
 
     // event listeners
