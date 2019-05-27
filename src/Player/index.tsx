@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import * as React from 'react';
 import { useRef } from 'react';
 import { Canvas, useThree, useRender, extend } from 'react-three-fiber';
@@ -16,14 +17,14 @@ function Controls(props) {
   return <orbitControls ref={controls} args={[camera]} {...props} />
 }
 
-const ProgressBar = (progress) => <progress max={100} value={progress} style={{ display: 'block' }} />
+const ProgressBar = ({ progress }) => <progress max={100} value={progress} style={{ display: 'block' }} />
 
 const Player = ({
   loader,
   path,
 }) => {
   const { progress: loadingProgress, model, error } = useModelLoader(loader, path);
-  const { progress: animationProgress, mixer } = useAnimationMixer(model);
+  const { progress: animationProgress } = useAnimationMixer(model);
 
   return (
     <>
