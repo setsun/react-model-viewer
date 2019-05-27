@@ -17,30 +17,36 @@ const data = {
   timeScale: 1,
 }
 
-const startAnimation = (mixer, onUpdate) => {
+const startAnimationLoop = (mixer, onUpdate) => {
   let lastTime = undefined;
 
   const tick = (timestamp) => {
     const delta = lastTime ? timestamp - lastTime : 0;
-    lastTime = timestamp;
 
+    // advance the animation-mixer timer
     mixer.update(delta / 1000);
 
-    onUpdate(delta);
-
-    // loop the animation
+    // recursively loop the animation
     requestAnimationFrame(tick);
+
+    // set the time for the next animation tick
+    lastTime = timestamp;
+
+    // update callback
+    onUpdate(delta);
   };
 
-  return requestAnimationFrame(tick);
+  requestAnimationFrame(tick);
 }
 
 const useAnimationMixer = (model) => {
   const [mixer, setMixer] = useState(undefined);
   const [progress, setProgress] = useState(0);
   const [activeActions, setActiveActions] = useState([]);
+  const [maxDuration, setMaxDuration] = useState(0);
   const clips = model && (model.animations || (model.geometry || {}).animations) || [];
 
+  // initialize the animation mixer
   useEffect(() => {
     if (!model) return;
 
@@ -54,10 +60,6 @@ const useAnimationMixer = (model) => {
       maxDuration = Math.max(maxDuration, clip.duration * 1000);
 
       action.enabled = true;
-      action.clampWhenFinished = false;
-
-      // action.setDuration(data.duration);
-      // action.setEffectiveTimeScale(data.timeScale);
 
       action
         .setLoop(LoopMode.repeat, Infinity)
@@ -67,9 +69,17 @@ const useAnimationMixer = (model) => {
       setActiveActions([...activeActions, action]);
     });
 
+    setMixer(mixer);
+    setMaxDuration(maxDuration);
+  }, [model]);
+
+  // start the animation
+  useEffect(() => {
+    if (!mixer) return;
 
     let timeElapsed = 0;
-    const animation = startAnimation(mixer, (delta) => {
+
+    startAnimationLoop(mixer, (delta) => {
       timeElapsed += delta;
       const timestamp = timeElapsed % maxDuration;
       const progress = (timestamp / maxDuration) * 100;
@@ -77,16 +87,10 @@ const useAnimationMixer = (model) => {
       setProgress(progress);
     });
 
-    mixer.addEventListener('loop', (threeEvent) => {
-      console.log(threeEvent);
-    });
-
-    mixer.addEventListener('finished', (threeEvent) => {
-      cancelAnimationFrame(animation);
-    });
-
-    setMixer(mixer);
-  }, [model]);
+    // event listeners
+    mixer.addEventListener('loop', (threeEvent) => {});
+    mixer.addEventListener('finished', (threeEvent) => {});
+  }, [mixer]);
 
   return { mixer, progress };
 };
