@@ -16,7 +16,7 @@ const modelPath = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Mo
 const App = () => (
   <ThreePlayer
     loader={loader}
-    modelPath={modelPath}
+    path={modelPath}
   />
 );
 ```
