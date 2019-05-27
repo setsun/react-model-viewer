@@ -29,7 +29,7 @@ const PlayControls = ({
       <ProgressBar progress={progress} style={{ width: '100%' }} />
     </div>
   );
-}
+};
 
 const Player = ({
   loader,
@@ -40,18 +40,22 @@ const Player = ({
 
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      {loadingProgress > 100 && !error && (
+      {loadingProgress < 100 && (
         <ProgressBar progress={loadingProgress} style={{ position: 'absolute' }} />
       )}
 
-      <Canvas camera={{position: [0, 0, 5]}}>
-        <CameraControls enableDamping enablePan={false} dampingFactor={0.1} rotateSpeed={0.1} maxPolarAngle={Math.PI / 2} />
+      <div style={{ position: 'relative', paddingBottom: '56.25%', width: '100%' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <Canvas camera={{position: [20, 20, 25]}}>
+            <CameraControls enableDamping enablePan={false} dampingFactor={0.1} rotateSpeed={0.1} maxPolarAngle={Math.PI / 2} />
 
-        <ambientLight intensity={0.5} />
-        <spotLight intensity={0.8} position={[300, 300, 400]} />
+            <ambientLight intensity={0.5} />
+            <spotLight intensity={0.8} position={[300, 300, 400]} />
 
-        {model && <primitive object={model.scene} />}
-      </Canvas>
+            {model && <primitive object={model.scene} />}
+          </Canvas>
+        </div>
+      </div>
 
       <PlayControls progress={animationProgress} />
     </div>
