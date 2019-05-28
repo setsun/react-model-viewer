@@ -7,16 +7,6 @@ const LoopMode = {
   pingpong: THREE.LoopPingPong
 };
 
-const data = {
-  clip: '*',
-  duration: 0,
-  clampWhenFinished: false,
-  crossFadeDuration: 0,
-  loop: 'repeat',
-  repetitions: Infinity,
-  timeScale: 1,
-}
-
 const startAnimationLoop = (mixer, onUpdate) => {
   let lastTime = undefined;
 
@@ -39,14 +29,12 @@ const startAnimationLoop = (mixer, onUpdate) => {
   requestAnimationFrame(tick);
 }
 
-const useAnimationMixer = (model) => {
+const useCreateAnimationMixer = (model) => {
   const [mixer, setMixer] = useState(undefined);
-  const [progress, setProgress] = useState(0);
-  const [activeActions, setActiveActions] = useState([]);
   const [maxDuration, setMaxDuration] = useState(0);
+  const [activeActions, setActiveActions] = useState([]);
   const clips = model && (model.animations || (model.geometry || {}).animations) || [];
 
-  // initialize the animation mixer
   useEffect(() => {
     if (!model) return;
 
@@ -73,24 +61,89 @@ const useAnimationMixer = (model) => {
     setMaxDuration(maxDuration);
   }, [model]);
 
-  // start the animation
+  return { mixer, maxDuration, activeActions };
+};
+
+const useStartAnimationMixer = ({
+  mixer,
+  progress,
+  maxDuration,
+  isPlaying,
+  setProgress,
+}) => {
   useEffect(() => {
     if (!mixer) return;
+    if (!isPlaying) return;
 
-    let timeElapsed = 0;
+    let timeElapsed = progress * maxDuration;
 
     startAnimationLoop(mixer, (delta) => {
       timeElapsed += delta;
       timeElapsed = timeElapsed % maxDuration;
       setProgress((timeElapsed / maxDuration) * 100);
     });
+  }, [mixer, isPlaying]);
+}
 
-    // event listeners
-    mixer.addEventListener('loop', (threeEvent) => {});
-    mixer.addEventListener('finished', (threeEvent) => {});
-  }, [mixer]);
+const usePlayToggle = ({ mixer, isPlaying }) => {
+  useEffect(() => {
+    if (!mixer) return;
 
-  return { mixer, progress };
+    mixer.timeScale = isPlaying ? 1 : 0;
+  }, [mixer, isPlaying]);
+};
+
+const useSeek = ({ mixer, isSeeking }) => {
+  useEffect(() => {
+    if (!mixer) return;
+    if (!isSeeking) return;
+
+    // todo
+  }, [mixer, isSeeking]);
+}
+
+const useAnimationMixer = (model) => {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // initialize the animation mixer
+  const { mixer, maxDuration, activeActions } = useCreateAnimationMixer(model);
+
+  // start the animation / playing setup
+  useStartAnimationMixer({
+    mixer,
+    isPlaying,
+    progress,
+    maxDuration,
+    setProgress,
+  });
+
+  // play / pause
+  usePlayToggle({ mixer, isPlaying });
+
+  // seeking
+  useSeek({ mixer, isSeeking });
+
+  return {
+    progress,
+    isPlaying,
+    isSeeking,
+    // set state callbacks
+    onPlay: () => {
+      setIsPlaying(true);
+      setIsSeeking(false);
+    },
+    onPause: () => {
+      setIsPlaying(false);
+      setIsSeeking(false);
+    },
+    onSeek: (progress) => {
+      setIsPlaying(false);
+      setIsSeeking(true);
+      setProgress(progress);
+    }
+  };
 };
 
 export default useAnimationMixer;
