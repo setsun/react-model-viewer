@@ -29,18 +29,18 @@ Additionally it supports animations via `THREE.AnimationMixer` if the model incl
 ```tsx
 import ThreePlayer from 'react-three-player';
 
-const loader = new THREE.GTLFLoader();
 const modelPath = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf';
 
 const App = () => (
-  <ThreePlayer loader={loader} path={modelPath} />
+  <ThreePlayer type="gtlf" path={modelPath} />
 );
 ```
 
 ### Coming Soon
 
-- [ ] Pause / play / loop controls for 3D animations
-- [ ] Ability to seek to an animation time like in a video
+- [ ] Pause / play / seeking for 3D animations (like a video player).
+- [ ] Loop controls / speed controls
+- [ ] Animation timestamps / frames
 - [ ] Better support for `OBJ` and switching out `MTL` textures.
 - [ ] Support for other loaders (`FBX`, `COLLADA`, etc.)
 - [ ] Render props for headless component rendering (BYOS - bring your own styles)
