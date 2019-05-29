@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { useState, useEffect, useMemo } from 'react';
 
 type ModelData = {
   model: any,
@@ -6,7 +9,22 @@ type ModelData = {
   error: any
 };
 
-const useModelLoader = (loader, path): ModelData => {
+const manager = new THREE.LoadingManager();
+
+const getLoader = (type) => {
+  switch (type) {
+    case 'gtlf': {
+      return new GLTFLoader(manager);
+    }
+    case 'obj': {
+      return new OBJLoader(manager);
+    }
+  }
+}
+
+const useModelLoader = (type, path): ModelData => {
+  const loader = useMemo(() => getLoader(type), [type]);
+
   const [model, setModel] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [progress, setProgress] = useState(0);
