@@ -85,7 +85,7 @@ const useStartAnimationMixer = ({
   }, [mixer, isPlaying]);
 }
 
-const usePlayToggle = ({ mixer, isPlaying }) => {
+const useTogglePlay = ({ mixer, isPlaying }) => {
   useEffect(() => {
     if (!mixer) return;
 
@@ -93,18 +93,31 @@ const usePlayToggle = ({ mixer, isPlaying }) => {
   }, [mixer, isPlaying]);
 };
 
-const useSeek = ({ mixer, isSeeking }) => {
+const useChangeLoopMode = ({ mixer, loopMode }) => {
+  useEffect(() => {
+    // todo
+  }, [mixer, loopMode]);
+};
+
+const useChangeTimeScale = ({ mixer, timeScale }) => {
+  useEffect(() => {
+    // todo
+  }, [mixer, timeScale]);
+};
+
+const useChangeSeekTime = ({ mixer, progress, isPlaying }) => {
   useEffect(() => {
     if (!mixer) return;
-    if (!isSeeking) return;
+    if (isPlaying) return;
 
     // todo
-  }, [mixer, isSeeking]);
+  }, [mixer, progress, isPlaying]);
 }
 
 const useAnimationMixer = (model) => {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isSeeking, setIsSeeking] = useState(false);
+  const [loopMode, setLoopMode] = useState(LoopMode.repeat);
+  const [timeScale, setTimeScale] = useState(1);
   const [progress, setProgress] = useState(0);
 
   // initialize the animation mixer
@@ -120,28 +133,38 @@ const useAnimationMixer = (model) => {
   });
 
   // play / pause
-  usePlayToggle({ mixer, isPlaying });
+  useTogglePlay({ mixer, isPlaying });
 
   // seeking
-  useSeek({ mixer, isSeeking });
+  useChangeSeekTime({ mixer, progress, isPlaying });
+
+  // change loop mode
+  useChangeLoopMode({ mixer, loopMode });
+
+  // change time scale
+  useChangeTimeScale({ mixer, timeScale });
 
   return {
     progress,
     isPlaying,
-    isSeeking,
+    loopMode,
+    timeScale,
     // set state callbacks
     onPlay: () => {
       setIsPlaying(true);
-      setIsSeeking(false);
     },
     onPause: () => {
       setIsPlaying(false);
-      setIsSeeking(false);
     },
     onSeek: (progress) => {
       setIsPlaying(false);
-      setIsSeeking(true);
       setProgress(progress);
+    },
+    onChangeLoopMode: (value) => {
+      setLoopMode(value);
+    },
+    onChangeTimeScale: (value) => {
+      setTimeScale(value);
     }
   };
 };

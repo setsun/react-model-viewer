@@ -8,11 +8,11 @@ import useAnimationMixer from '../hooks/useAnimationMixer';
 
 extend({ OrbitControls });
 
-
 type PlayerProps = {
   type: 'gtlf' | 'obj';
   path: string;
   aspect: [number, number];
+  waypoints: [],
 }
 
 const ProgressBar = ({ progress, style, ...rest }) => (
@@ -60,10 +60,37 @@ const PlayButton = ({
   </button>
 );
 
-const PlayControls = ({
+const SpeedControls = () => (
+  <button>
+    <svg viewBox="0 0 16 16" background="transparent">
+    </svg>
+  </button>
+);
+
+const LoopControls = () => (
+  <button>
+    <svg viewBox="0 0 16 16" background="transparent">
+    </svg>
+  </button>
+);
+
+const VrControls = () => (
+  <button>
+    <svg viewBox="0 0 16 16" background="transparent">
+    </svg>
+  </button>
+);
+
+const FullscreenControls = () => (
+  <button>
+    <svg viewBox="0 0 16 16" background="transparent">
+    </svg>
+  </button>
+);
+
+const ControlBar = ({
   progress,
   isPlaying,
-  isSeeking,
   onPlay,
   onPause,
   onSeek,
@@ -79,8 +106,7 @@ const PlayControls = ({
           const mouseX = e.clientX;
           const percent = ((mouseX - left) / width) * 100;
 
-          // todo - finish seeking logic
-          // onSeek(percent);
+          onSeek(percent);
         }}
       />
 
@@ -93,6 +119,7 @@ const Player = ({
   type,
   path,
   aspect,
+  waypoints,
   ...rest
 }: PlayerProps) => {
   const {
@@ -104,7 +131,6 @@ const Player = ({
   const {
     progress: animationProgress,
     isPlaying,
-    isSeeking,
     onPlay,
     onPause,
     onSeek,
@@ -116,7 +142,7 @@ const Player = ({
         <ProgressBar progress={loadingProgress} style={{ position: 'absolute' }} />
       )}
 
-      <div style={{ position: 'relative', paddingBottom: `${aspect[1] / aspect[0]}%`, width: '100%' }}>
+      <div style={{ position: 'relative', paddingBottom: `${(aspect[1] / aspect[0]) * 100}%`, width: '100%' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <Canvas {...rest}>
             <CameraControls
@@ -128,17 +154,18 @@ const Player = ({
             />
 
             <ambientLight intensity={0.5} />
-            <spotLight intensity={0.8} position={[300, 300, 400]} />
+            <spotLight intensity={0.8} position={[250, 250, -250]} />
+            <spotLight intensity={0.8} position={[250, 250, 250]} />
+            <spotLight intensity={0.8} position={[-250, 250, 250]} />
 
             {model && <primitive object={model.scene || model} />}
           </Canvas>
         </div>
       </div>
 
-      <PlayControls
+      <ControlBar
         progress={animationProgress}
         isPlaying={isPlaying}
-        isSeeking={isSeeking}
         onPlay={onPlay}
         onPause={onPause}
         onSeek={onSeek}
