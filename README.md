@@ -8,6 +8,12 @@ Supports:
 - Animation progress bar for 3D animations
 - Orbit camera controls
 
+### Install
+
+```
+npm i react-three-player
+```
+
 ### Example
 http://setsun.io/react-three-player/?path=/story/react-three-player--gtlf-animationmixer
 
