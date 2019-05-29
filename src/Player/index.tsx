@@ -12,6 +12,7 @@ extend({ OrbitControls });
 type PlayerProps = {
   type: 'gtlf' | 'obj';
   path: string;
+  aspect: [number, number];
 }
 
 const ProgressBar = ({ progress, style, ...rest }) => (
@@ -91,6 +92,7 @@ const PlayControls = ({
 const Player = ({
   type,
   path,
+  aspect,
   ...rest
 }: PlayerProps) => {
   const {
@@ -114,7 +116,7 @@ const Player = ({
         <ProgressBar progress={loadingProgress} style={{ position: 'absolute' }} />
       )}
 
-      <div style={{ position: 'relative', paddingBottom: '56.25%', width: '100%' }}>
+      <div style={{ position: 'relative', paddingBottom: `${aspect[1] / aspect[0]}%`, width: '100%' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <Canvas {...rest}>
             <CameraControls
@@ -143,6 +145,10 @@ const Player = ({
       />
     </div>
   );
+}
+
+Player.defaultProps = {
+  aspect: [16, 9]
 }
 
 export default Player;
