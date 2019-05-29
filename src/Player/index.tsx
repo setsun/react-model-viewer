@@ -8,6 +8,12 @@ import useAnimationMixer from '../hooks/useAnimationMixer';
 
 extend({ OrbitControls });
 
+
+type PlayerProps = {
+  type: 'gtlf' | 'obj';
+  path: string;
+}
+
 const ProgressBar = ({ progress, style, ...rest }) => (
   <progress max={100} value={progress} style={{ display: 'block', ...style }} {...rest} />
 );
@@ -22,19 +28,35 @@ function CameraControls(props) {
 }
 
 const SeekButton = ({
-  style,
+  progress,
 }) => (
   <button
     style={{
       position: 'absolute',
+      left: `calc(${progress}% - 4px)`,
       height: '100%',
       border: 'none',
       borderRadius: '3px',
       padding: 0,
       margin: 0,
-      ...style
+      width: '8px',
+      cursor: 'pointer',
     }}
   />
+);
+
+const PlayButton = ({
+  isPlaying,
+}) => (
+  <button>
+    <svg viewBox="0 0 16 16" background="transparent">
+      {isPlaying ? (
+        <path id="play-icon" d="M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28" />
+      ) : (
+        <path id="pause-icon" d="M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26" />
+      )}
+    </svg>
+  </button>
 );
 
 const PlayControls = ({
@@ -60,24 +82,22 @@ const PlayControls = ({
           // onSeek(percent);
         }}
       />
-      <SeekButton style={{ left: `calc(${progress}% - 4px)`, width: '8px', cursor: 'pointer' }}/>
+
+      <SeekButton progress={progress} />
     </div>
   );
 };
 
 const Player = ({
-  loader,
+  type,
   path,
-  materialPaths,
   ...rest
-}) => {
-  const [materialPath, setMaterialPath] = useState(undefined);
-
+}: PlayerProps) => {
   const {
     progress: loadingProgress,
     model,
     error
-  } = useModelLoader(loader, path);
+  } = useModelLoader(type, path);
 
   const {
     progress: animationProgress,
@@ -97,7 +117,13 @@ const Player = ({
       <div style={{ position: 'relative', paddingBottom: '56.25%', width: '100%' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <Canvas {...rest}>
-            <CameraControls enableDamping enablePan={false} dampingFactor={0.1} rotateSpeed={0.1} maxPolarAngle={Math.PI / 2} />
+            <CameraControls
+              enableDamping
+              enablePan
+              dampingFactor={0.1}
+              rotateSpeed={0.1}
+              maxPolarAngle={Math.PI / 2}
+            />
 
             <ambientLight intensity={0.5} />
             <spotLight intensity={0.8} position={[300, 300, 400]} />
