@@ -31,8 +31,7 @@ const startAnimationLoop = (mixer, onUpdate) => {
 
 const useCreateAnimationMixer = (model) => {
   const [mixer, setMixer] = useState(undefined);
-  const [maxDuration, setMaxDuration] = useState(0);
-  const [activeActions, setActiveActions] = useState([]);
+  const [clipActions, setClipActions] = useState([]);
   const clips = model && (model.animations || (model.geometry || {}).animations) || [];
 
   useEffect(() => {
@@ -40,47 +39,51 @@ const useCreateAnimationMixer = (model) => {
 
     const mixer = new THREE.AnimationMixer(model.scene);
 
-    let maxDuration = 0;
 
-    clips.forEach((clip) => {
+    const actions = clips.map((clip) => {
       const action = mixer.clipAction(clip);
-
-      maxDuration = Math.max(maxDuration, clip.duration * 1000);
 
       action.enabled = true;
 
-      action
-        .setLoop(LoopMode.repeat, Infinity)
-        .fadeIn(0)
-        .play();
-
-      setActiveActions([...activeActions, action]);
+      return action;
     });
 
+    setClipActions(actions);
     setMixer(mixer);
-    setMaxDuration(maxDuration);
   }, [model]);
 
-  return { mixer, maxDuration, activeActions };
+  return { mixer, clipActions };
 };
 
 const useStartAnimationMixer = ({
   mixer,
   progress,
-  maxDuration,
+  clipAction,
+  timeScale,
+  loopMode,
   isPlaying,
   setProgress,
 }) => {
   useEffect(() => {
     if (!mixer) return;
+    if (!clipAction) return;
     if (!isPlaying) return;
 
-    let timeElapsed = progress * maxDuration;
+    const durationMs = clipAction._clip.duration * 1000;
+
+    clipAction.timeScale = timeScale;
+
+    clipAction
+      .setLoop(loopMode, Infinity)
+      .fadeIn(0)
+      .play();
+
+    let timeElapsed = progress * durationMs;
 
     startAnimationLoop(mixer, (delta) => {
       timeElapsed += delta;
-      timeElapsed = timeElapsed % maxDuration;
-      setProgress((timeElapsed / maxDuration) * 100);
+      timeElapsed = timeElapsed % durationMs;
+      setProgress((timeElapsed / durationMs) * 100);
     });
   }, [mixer, isPlaying]);
 }
@@ -121,14 +124,17 @@ const useAnimationMixer = (model) => {
   const [progress, setProgress] = useState(0);
 
   // initialize the animation mixer
-  const { mixer, maxDuration, activeActions } = useCreateAnimationMixer(model);
+  const { mixer, clipActions } = useCreateAnimationMixer(model);
 
   // start the animation / playing setup
   useStartAnimationMixer({
     mixer,
     isPlaying,
     progress,
-    maxDuration,
+    // todo - allow swapping active actions
+    clipAction: clipActions[0],
+    timeScale,
+    loopMode,
     setProgress,
   });
 
