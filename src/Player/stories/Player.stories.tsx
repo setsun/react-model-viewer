@@ -13,20 +13,19 @@ storiesOf('react-three-player', module)
       path={'https://raw.githubusercontent.com/Setsun/static-3d-assets/master/gtlf/pikmin/scene.gltf'}
     />
   ))
-  // .add('Collada', () => (
-  //   <Player
-  //     type="collada"
-  //     camera={{ position: [20, 20, 25] }}
-  //     path={'https://raw.githubusercontent.com/Setsun/static-3d-assets/master/gtlf/pikmin/scene.gltf'}
-  //   />
-  // ))
-  // .add('OBJ & MTL', () => (
+  // .add('OBJ', () => (
   //   <Player
   //     type="obj"
-  //     camera={{ position: [10, 10, 15] }}
+  //     aspect={array('aspect', [16, 9])}
+  //     camera={{ position: [30, 30, 50] }}
   //     path={'https://raw.githubusercontent.com/Setsun/static-3d-assets/master/obj/aston/aston_vulcan.obj'}
-  //     materialPaths={[
-  //       'https://raw.githubusercontent.com/Setsun/static-3d-assets/master/obj/aston/aston_vulcan.mtl'
-  //     ]}
+  //   />
+  // ))
+  // .add('FBX', () => (
+  //   <Player
+  //     type="fbx"
+  //     aspect={array('aspect', [16, 9])}
+  //     camera={{ position: [0, 0, 0] }}
+  //     path={'https://raw.githubusercontent.com/Setsun/static-3d-assets/master/fbx/puppycat/source/Puppycat.fbx'}
   //   />
   // ))

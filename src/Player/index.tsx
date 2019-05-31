@@ -9,7 +9,7 @@ import useAnimationMixer from '../hooks/useAnimationMixer';
 extend({ OrbitControls });
 
 type PlayerProps = {
-  type: 'gtlf' | 'obj';
+  type: 'gtlf' | 'obj' | 'fbx' | 'collada';
   path: string;
   aspect: [number, number];
   waypoints: [],
