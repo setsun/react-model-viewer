@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { useState, useEffect, useMemo } from 'react';
 
 type ModelData = {
@@ -18,6 +20,12 @@ const getLoader = (type) => {
     }
     case 'obj': {
       return new OBJLoader(manager);
+    }
+    case 'fbx': {
+      return new FBXLoader(manager);
+    }
+    case 'collada': {
+      return new ColladaLoader(manager);
     }
   }
 }
