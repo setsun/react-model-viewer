@@ -17,19 +17,11 @@ module.exports = {
   resolve: {
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
     extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.json'],
-    // alias: {
-    //   three$: path.resolve('./lib/three-exports.js'),
-    // },
   },
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }],
-      },
-      {
-        test: /\.js(x?)$/,
+        test: /\.(t|j)sx?$/,
         exclude: /(node_modules)/,
         use: [{ loader: 'babel-loader' }],
       },

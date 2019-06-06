@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { Canvas, useThree, useRender, extend } from 'react-three-fiber';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import PlayCircle from 'react-feather/dist/icons/play-circle';
+import PauseCircle from 'react-feather/dist/icons/pause-circle';
+import PlusCircle from 'react-feather/dist/icons/plus-circle';
+import MinusCircle from 'react-feather/dist/icons/minus-circle';
+import Repeat from 'react-feather/dist/icons/repeat';
 
 import useModelLoader from '../hooks/useModelLoader';
 import useAnimationMixer from '../hooks/useAnimationMixer';
@@ -50,41 +55,28 @@ const PlayButton = ({
   isPlaying,
 }) => (
   <button>
-    <svg viewBox="0 0 16 16" background="transparent">
-      {isPlaying ? (
-        <path id="play-icon" d="M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28" />
-      ) : (
-        <path id="pause-icon" d="M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26" />
-      )}
-    </svg>
+    {isPlaying ? (
+      <PauseCircle />
+    ) : (
+      <PlayCircle />
+    )}
   </button>
 );
 
 const SpeedControls = () => (
-  <button>
-    <svg viewBox="0 0 16 16" background="transparent">
-    </svg>
-  </button>
+  <>
+    <button>
+      <MinusCircle />
+    </button>
+    <button>
+      <PlusCircle />
+    </button>
+  </>
 );
 
 const LoopControls = () => (
   <button>
-    <svg viewBox="0 0 16 16" background="transparent">
-    </svg>
-  </button>
-);
-
-const VrControls = () => (
-  <button>
-    <svg viewBox="0 0 16 16" background="transparent">
-    </svg>
-  </button>
-);
-
-const FullscreenControls = () => (
-  <button>
-    <svg viewBox="0 0 16 16" background="transparent">
-    </svg>
+    <Repeat />
   </button>
 );
 
@@ -96,21 +88,25 @@ const ControlBar = ({
   onSeek,
 }) => {
   return (
-    <div style={{ position: 'relative', width: '100%', display: 'flex' }}>
-      <ProgressBar
-        progress={progress}
-        style={{ width: '100%', cursor: 'pointer' }}
-        onClick={(e) => {
-          const left = e.currentTarget.getBoundingClientRect().left;
-          const width = e.currentTarget.offsetWidth;
-          const mouseX = e.clientX;
-          const percent = ((mouseX - left) / width) * 100;
+    <div style={{ display: 'flex', width: '100%' }}>
+      <PlayButton isPlaying={isPlaying} />
 
-          onSeek(percent);
-        }}
-      />
+      <div style={{ position: 'relative', width: '100%', display: 'flex' }}>
+        <ProgressBar
+          progress={progress}
+          style={{ width: '100%', cursor: 'pointer' }}
+          onClick={(e) => {
+            const left = e.currentTarget.getBoundingClientRect().left;
+            const width = e.currentTarget.offsetWidth;
+            const mouseX = e.clientX;
+            const percent = ((mouseX - left) / width) * 100;
 
-      <SeekButton progress={progress} />
+            onSeek(percent);
+          }}
+        />
+
+        <SeekButton progress={progress} />
+      </div>
     </div>
   );
 };
