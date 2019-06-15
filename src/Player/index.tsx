@@ -20,6 +20,12 @@ type PlayerProps = {
   waypoints: [],
 }
 
+const BaseButton = ({ children, ...rest }: any) => (
+  <button style={{ background: 'none', border: 'none', margin: 0, display: 'flex' }} {...rest}>
+    {children}
+  </button>
+)
+
 const ProgressBar = ({ progress, style, ...rest }) => (
   <progress max={100} value={progress} style={{ display: 'block', ...style }} {...rest} />
 );
@@ -54,30 +60,30 @@ const SeekButton = ({
 const PlayButton = ({
   isPlaying,
 }) => (
-  <button>
+  <BaseButton>
     {isPlaying ? (
       <PauseCircle />
     ) : (
       <PlayCircle />
     )}
-  </button>
+  </BaseButton>
 );
 
 const SpeedControls = () => (
   <>
-    <button>
+    <BaseButton>
       <MinusCircle />
-    </button>
-    <button>
+    </BaseButton>
+    <BaseButton>
       <PlusCircle />
-    </button>
+    </BaseButton>
   </>
 );
 
 const LoopControls = () => (
-  <button>
+  <BaseButton>
     <Repeat />
-  </button>
+  </BaseButton>
 );
 
 const ControlBar = ({
@@ -90,6 +96,10 @@ const ControlBar = ({
   return (
     <div style={{ display: 'flex', width: '100%' }}>
       <PlayButton isPlaying={isPlaying} />
+
+      <SpeedControls />
+
+      <LoopControls />
 
       <div style={{ position: 'relative', width: '100%', display: 'flex' }}>
         <ProgressBar
