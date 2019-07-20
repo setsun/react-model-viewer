@@ -1,7 +1,7 @@
 {
-  "name": "react-three-player",
+  "name": "react-model-viewer",
   "version": "0.3.0",
-  "description": "A Three.js model viewer & animation player",
+  "description": "A 3D model viewer / animation player component",
   "main": "dist/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --config webpack.config.js --watch",
@@ -9,12 +9,12 @@
     "storybook": "start-storybook -p 6006",
     "deploy-storybook": "storybook-to-ghpages"
   },
-  "repository": "https://github.com/Setsun/react-three-player",
+  "repository": "https://github.com/Setsun/react-model-viewer",
   "author": "Setsun <setsun@setsun.io>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/addon-info": "^5.1.9",
     "@storybook/addon-knobs": "^5.1.9",
@@ -30,29 +30,29 @@
     "eslint-config-eslint": "5.0.1",
     "eslint-config-prettier": "6.0.0",
     "eslint-config-setsun": "^2.3.0",
-    "eslint-plugin-import": "2.18.0",
+    "eslint-plugin-import": "2.18.2",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-react": "7.14.2",
-    "file-loader": "^4.0.0",
+    "file-loader": "^4.1.0",
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-three-fiber": "^2.1.4",
     "storybook-readme": "^5.0.5",
-    "three": "^0.106.1",
-    "typescript": "^3.5.2",
-    "url-loader": "^2.0.1",
-    "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5"
+    "three": "^0.106.2",
+    "typescript": "^3.5.3",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.2.9",
-    "three": "^0.106.1"
+    "react-three-fiber": "^2.2.12",
+    "three": "^0.106.2"
   },
   "dependencies": {
-    "react-feather": "^1.1.6"
+    "react-feather": "^2.0.3"
   }
 }

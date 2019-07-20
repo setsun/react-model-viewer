@@ -4,13 +4,20 @@ import { useState, useEffect } from 'react';
 const LoopMode = {
   once: THREE.LoopOnce,
   repeat: THREE.LoopRepeat,
-  pingpong: THREE.LoopPingPong
 };
 
+let GLOBAL_IS_PLAYING = true;
+
 const startAnimationLoop = (mixer, onUpdate) => {
-  let lastTime = undefined;
+  let lastTime = 0;
 
   const tick = (timestamp) => {
+    // if the player is no longer playing, then cancel loop
+    if (!GLOBAL_IS_PLAYING) {
+      lastTime = 0;
+      return;
+    }
+
     const delta = lastTime ? timestamp - lastTime : 0;
 
     // advance the animation-mixer timer
@@ -23,11 +30,11 @@ const startAnimationLoop = (mixer, onUpdate) => {
     lastTime = timestamp;
 
     // update callback
-    onUpdate(delta);
+    onUpdate();
   };
 
   requestAnimationFrame(tick);
-}
+};
 
 const useCreateAnimationMixer = (model) => {
   const [mixer, setMixer] = useState(undefined);
@@ -39,12 +46,9 @@ const useCreateAnimationMixer = (model) => {
 
     const mixer = new THREE.AnimationMixer(model.scene);
 
-
     const actions = clips.map((clip) => {
       const action = mixer.clipAction(clip);
-
       action.enabled = true;
-
       return action;
     });
 
@@ -69,8 +73,6 @@ const useStartAnimationMixer = ({
     if (!clipAction) return;
     if (!isPlaying) return;
 
-    const durationMs = clipAction._clip.duration * 1000;
-
     clipAction.timeScale = timeScale;
 
     clipAction
@@ -78,100 +80,104 @@ const useStartAnimationMixer = ({
       .fadeIn(0)
       .play();
 
-    let timeElapsed = progress * durationMs;
+    startAnimationLoop(mixer, () => {
+      const duration = clipAction._clip.duration;
+      const elapsedDuration = (mixer.time % duration);
+      const progress = (elapsedDuration / duration) * 100;
 
-    startAnimationLoop(mixer, (delta) => {
-      timeElapsed += delta;
-      timeElapsed = timeElapsed % durationMs;
-      setProgress((timeElapsed / durationMs) * 100);
+      setProgress(progress);
     });
   }, [mixer, isPlaying]);
 }
 
-const useTogglePlay = ({ mixer, isPlaying }) => {
+const useChangeLoopMode = ({ clipAction, loopMode }) => {
   useEffect(() => {
-    if (!mixer) return;
+    if (!clipAction) return;
 
-    mixer.timeScale = isPlaying ? 1 : 0;
-  }, [mixer, isPlaying]);
-};
-
-const useChangeLoopMode = ({ mixer, loopMode }) => {
-  useEffect(() => {
-    // todo
-  }, [mixer, loopMode]);
+    clipAction.setLoop(loopMode, Infinity);
+  }, [clipAction, loopMode]);
 };
 
 const useChangeTimeScale = ({ mixer, timeScale }) => {
   useEffect(() => {
-    // todo
+    if (!mixer) return;
+
+    mixer.timeScale = timeScale;
   }, [mixer, timeScale]);
 };
 
-const useChangeSeekTime = ({ mixer, progress, isPlaying }) => {
+const useChangeClipAction = ({ mixer, clipActions, clipActionIndex }) => {
   useEffect(() => {
     if (!mixer) return;
-    if (isPlaying) return;
-
-    // todo
-  }, [mixer, progress, isPlaying]);
-}
+  });
+};
 
 const useAnimationMixer = (model) => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlayingState] = useState(GLOBAL_IS_PLAYING);
   const [loopMode, setLoopMode] = useState(LoopMode.repeat);
   const [timeScale, setTimeScale] = useState(1);
   const [progress, setProgress] = useState(0);
+  const [clipActionIndex, setClipAction] = useState(0);
 
   // initialize the animation mixer
   const { mixer, clipActions } = useCreateAnimationMixer(model);
+  const clipAction = clipActions[clipActionIndex];
+
+  // helper to sync global / useState values
+  const setIsPlaying = (value) => {
+    GLOBAL_IS_PLAYING = value;
+    setIsPlayingState(value);
+  }
 
   // start the animation / playing setup
   useStartAnimationMixer({
     mixer,
+    clipAction,
     isPlaying,
-    progress,
-    // todo - allow swapping active actions
-    clipAction: clipActions[0],
-    timeScale,
     loopMode,
+    timeScale,
+    progress,
     setProgress,
   });
 
-  // play / pause
-  useTogglePlay({ mixer, isPlaying });
-
-  // seeking
-  useChangeSeekTime({ mixer, progress, isPlaying });
-
   // change loop mode
-  useChangeLoopMode({ mixer, loopMode });
+  useChangeLoopMode({ clipAction, loopMode });
 
   // change time scale
   useChangeTimeScale({ mixer, timeScale });
 
+  // change clip action
+  useChangeClipAction({ mixer, clipActions, clipActionIndex })
+
   return {
     progress,
-    isPlaying,
     loopMode,
     timeScale,
+    isPlaying,
     // set state callbacks
-    onPlay: () => {
+    play: () => {
       setIsPlaying(true);
     },
-    onPause: () => {
+    pause: () => {
       setIsPlaying(false);
     },
-    onSeek: (progress) => {
+    seek: (progress) => {
       setIsPlaying(false);
+
       setProgress(progress);
+
+      const duration = clipAction._clip.duration;
+      const seekTime = (duration * (progress / 100));
+
+      // set the active clipAction and mixer time to 0 to reset,
+      // then update the time using AnimationMixer#update
+      clipAction.time = 0;
+      mixer.time = 0;
+      mixer.update(seekTime);
     },
-    onChangeLoopMode: (value) => {
-      setLoopMode(value);
-    },
-    onChangeTimeScale: (value) => {
-      setTimeScale(value);
-    }
+    setClipAction,
+    setLoopMode,
+    setTimeScale,
   };
 };
 

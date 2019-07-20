@@ -1,3 +1,3 @@
-import Player from './Player';
+import ModelViewer from './ModelViewer';
 
-export default Player;
+export default ModelViewer;
