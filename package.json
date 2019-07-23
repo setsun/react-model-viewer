@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "react-feather": "^2.0.3",
-    "react-three-fiber": "^2.2.12"
+    "react-three-fiber": "^2.2.12",
+    "react-three-hooks": "^0.1.0"
   }
 }

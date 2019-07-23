@@ -1,6 +1,4 @@
-import * as THREE from 'three';
-import useModelLoader from '../hooks/useModelLoader';
-import useAnimationMixer from '../hooks/useAnimationMixer';
+import { useModelLoader, useAnimationMixer } from 'react-three-hooks';
 
 type Props = {
   src: string;
