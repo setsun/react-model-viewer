@@ -38,7 +38,7 @@
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.1.4",
+    "react-three-fiber": "^2.2.12",
     "storybook-readme": "^5.0.5",
     "three": "^0.106.2",
     "typescript": "^3.5.3",
@@ -49,10 +49,10 @@
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.2.12",
     "three": "^0.106.2"
   },
   "dependencies": {
-    "react-feather": "^2.0.3"
+    "react-feather": "^2.0.3",
+    "react-three-fiber": "^2.2.12"
   }
 }

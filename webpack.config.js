@@ -44,6 +44,12 @@ module.exports = {
       commonjs2: 'react',
       commonjs: 'react',
       amd: 'react',
+    },
+    three: {
+      root: 'three',
+      commonjs2: 'three',
+      commonjs: 'three',
+      amd: 'three',
     }
   },
   plugins: [
