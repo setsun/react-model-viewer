@@ -26,24 +26,24 @@
     "babel-loader": "8.0.6",
     "babel-preset-setsun": "2.3.0",
     "cross-env": "5.2.0",
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "eslint-config-eslint": "5.0.1",
     "eslint-config-prettier": "6.0.0",
     "eslint-config-setsun": "^2.3.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-prettier": "3.1.0",
-    "eslint-plugin-react": "7.14.2",
+    "eslint-plugin-react": "7.14.3",
     "file-loader": "^4.1.0",
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.2.12",
+    "react-three-fiber": "^2.2.13",
     "storybook-readme": "^5.0.5",
     "three": "^0.106.2",
     "typescript": "^3.5.3",
     "url-loader": "^2.1.0",
-    "webpack": "^4.36.1",
+    "webpack": "^4.37.0",
     "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "react-feather": "^2.0.3",
-    "react-three-fiber": "^2.2.12",
-    "react-three-hooks": "^0.1.0"
+    "react-three-fiber": "^2.2.13",
+    "react-three-hooks": "^0.1.1"
   }
 }
