@@ -54,6 +54,6 @@
   "dependencies": {
     "react-feather": "^2.0.3",
     "react-three-fiber": "^2.2.13",
-    "react-three-hooks": "^0.1.1"
+    "react-three-hooks": "^0.1.2"
   }
 }
