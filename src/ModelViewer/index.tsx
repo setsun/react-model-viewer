@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as React from 'react';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Canvas, useThree, useRender, extend } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -8,6 +8,8 @@ import PlayCircle from 'react-feather/dist/icons/play-circle';
 import PauseCircle from 'react-feather/dist/icons/pause-circle';
 import PlusCircle from 'react-feather/dist/icons/plus-circle';
 import MinusCircle from 'react-feather/dist/icons/minus-circle';
+import ChevronUp from 'react-feather/dist/icons/chevron-up';
+import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Repeat from 'react-feather/dist/icons/repeat';
 
 import BaseModelViewer from '../base';
@@ -20,9 +22,15 @@ type Props = {
   aspect?: [number, number];
 };
 
-const BaseButton = ({ children, ...rest }: any) => (
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden'
+};
+
+const BaseButton = ({ children, style, ...rest }: any) => (
   <button
-    style={{ background: 'none', border: 'none', margin: 0, display: 'flex', alignItems: 'center', color: '#fff' }}
+    style={{ background: 'none', border: 'none', margin: 0, display: 'flex', alignItems: 'center', color: '#fff', ...style }}
     {...rest}
   >
     {children}
@@ -105,7 +113,38 @@ const LoopControls = ({ loopMode, setLoopMode }) => (
   </BaseButton>
 );
 
+const ClipActionControls = ({ clipActions, clipActionIndex, setClipAction }) => {
+  const clipActionName = clipActions.length && clipActions[clipActionIndex]._clip.name;
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {open && (
+        <div style={{ position: 'absolute', bottom: 0, right: 0, marginBottom: '32px', background: 'rgba(0, 0, 0, 0.5)', minHeight: '32px', display: 'flex', flexDirection: 'column', padding: '4px', justifyContent: 'center' }}>
+          {clipActions.map((clipAction, index) => (
+            <BaseButton
+              onClick={() => {
+                setClipAction(index);
+                setOpen(false);
+              }}
+            >
+              {clipAction._clip.name}
+            </BaseButton>
+          ))}
+        </div>
+      )}
+
+      <BaseButton onClick={() => setOpen(!open)}>
+        <span style={{ width: '64px', ...ellipsisStyle }}>{clipActionName}</span>
+        {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </BaseButton>
+    </div>
+  )
+};
+
 const ControlBar = ({
+  clipActions,
+  clipActionIndex,
   progress,
   timeScale,
   loopMode,
@@ -115,6 +154,7 @@ const ControlBar = ({
   seek,
   setTimeScale,
   setLoopMode,
+  setClipAction
 }) => (
   <div style={{ display: 'flex', width: '100%', padding: '8px', background: 'rgba(0, 0, 0, 0.5)' }}>
     <PlayButton play={play} pause={pause} isPlaying={isPlaying} />
@@ -122,6 +162,8 @@ const ControlBar = ({
     <SpeedControls timeScale={timeScale} setTimeScale={setTimeScale} />
 
     <LoopControls loopMode={loopMode} setLoopMode={setLoopMode} />
+
+    <ClipActionControls clipActions={clipActions} clipActionIndex={clipActionIndex} setClipAction={setClipAction} />
 
     <div style={{ position: 'relative', width: '100%', display: 'flex', marginLeft: '8px' }}>
       <ProgressBar
@@ -149,6 +191,8 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
       modelCenter,
       modelProgress,
       modelError,
+      clipActions,
+      clipActionIndex,
       isPlaying,
       loopMode,
       timeScale,
@@ -213,6 +257,8 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
         </div>
 
         <ControlBar
+          clipActions={clipActions}
+          clipActionIndex={clipActionIndex}
           progress={animationProgress}
           loopMode={loopMode}
           timeScale={timeScale}
@@ -222,6 +268,7 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
           seek={seek}
           setTimeScale={setTimeScale}
           setLoopMode={setLoopMode}
+          setClipAction={setClipAction}
         />
       </div>
     )}

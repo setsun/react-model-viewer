@@ -15,6 +15,8 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
   } = useModelLoader(type, src);
 
   const {
+    clipActions,
+    clipActionIndex,
     isPlaying,
     loopMode,
     timeScale,
@@ -32,6 +34,8 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
     modelCenter,
     modelProgress,
     modelError,
+    clipActions,
+    clipActionIndex,
     isPlaying,
     loopMode,
     timeScale,
