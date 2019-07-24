@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import * as React from 'react';
 import { useRef } from 'react';
 import { Canvas, useThree, useRender, extend } from 'react-three-fiber';
@@ -21,7 +22,7 @@ type Props = {
 
 const BaseButton = ({ children, ...rest }: any) => (
   <button
-    style={{ background: 'none', border: 'none', margin: 0, display: 'flex' }}
+    style={{ background: 'none', border: 'none', margin: 0, display: 'flex', alignItems: 'center', color: '#fff' }}
     {...rest}
   >
     {children}
@@ -74,7 +75,7 @@ const SpeedControls = ({ timeScale, setTimeScale }) => (
   <>
     <BaseButton
       onClick={() => {
-        setTimeScale(Math.max(0.25, timeScale - 0.25));
+        setTimeScale(Math.max(-0.25, timeScale - 0.25));
       }}
     >
       <MinusCircle size={16} />
@@ -91,8 +92,16 @@ const SpeedControls = ({ timeScale, setTimeScale }) => (
 );
 
 const LoopControls = ({ loopMode, setLoopMode }) => (
-  <BaseButton>
-    <Repeat size={16} />
+  <BaseButton
+    onClick={() => {
+      const nextLoopMode = loopMode === THREE.LoopRepeat ? THREE.LoopOnce : THREE.LoopRepeat;
+      setLoopMode(nextLoopMode);
+    }}
+  >
+    <Repeat
+      size={16}
+      color={loopMode === THREE.LoopRepeat ? 'currentColor' : '#bebebe'}
+    />
   </BaseButton>
 );
 
@@ -107,14 +116,14 @@ const ControlBar = ({
   setTimeScale,
   setLoopMode,
 }) => (
-  <div style={{ display: 'flex', width: '100%' }}>
+  <div style={{ display: 'flex', width: '100%', padding: '8px', background: 'rgba(0, 0, 0, 0.5)' }}>
     <PlayButton play={play} pause={pause} isPlaying={isPlaying} />
 
     <SpeedControls timeScale={timeScale} setTimeScale={setTimeScale} />
 
-    {/* <LoopControls loopMode={loopMode} setLoopMode={setLoopMode} /> */}
+    <LoopControls loopMode={loopMode} setLoopMode={setLoopMode} />
 
-    <div style={{ position: 'relative', width: '100%', display: 'flex' }}>
+    <div style={{ position: 'relative', width: '100%', display: 'flex', marginLeft: '8px' }}>
       <ProgressBar
         progress={progress}
         style={{ width: '100%', cursor: 'pointer' }}
