@@ -6,8 +6,9 @@ Supports:
 - GTLF, OBJ formats
 - Loading progress bar for asset files
 - Animation progress bar for 3D animations
+- Animation clip selection
 - Orbit camera controls
-- Play, pause, & seek controls
+- Play, pause, seek, & loop controls
 - Playback speed controls
 
 ### Install
@@ -17,11 +18,9 @@ npm i react-model-viewer
 ```
 
 ### Example
-http://setsun.io/react-model-viewer/?path=/story/react-model-viewer--gtlf-animationmixer
+http://setsun.io/react-model-viewer/?path=/story/react-model-viewer--gtlf-sonic
 
-(The example below can take a few seconds to load in Storybook, this will be optimized in the future)
-
-![example](https://user-images.githubusercontent.com/4651424/58447820-b682f000-80d3-11e9-8ab8-ab1f97a3fc1f.gif)
+![example](https://user-images.githubusercontent.com/4651424/61834820-64e2b180-ae47-11e9-85d4-cd69d02b7dd6.gif)
 
 ### API
 `react-model-viewer` is meant to interface seamlessly with `three.js` model loaders  for loading 3D assets (`GTLFLoader`, `OBJLoader`, etc).
@@ -40,7 +39,6 @@ const App = () => (
 
 ### Coming Soon
 
-- [ ] Loop controls
 - [ ] Animation timestamps / frames
 - [ ] Better support for `OBJ` and switching out `MTL` textures.
 - [ ] Support for other loaders (`FBX`, `COLLADA`, etc.)
