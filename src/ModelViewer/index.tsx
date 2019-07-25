@@ -12,7 +12,7 @@ import ChevronUp from 'react-feather/dist/icons/chevron-up';
 import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Repeat from 'react-feather/dist/icons/repeat';
 
-import BaseModelViewer from '../base';
+import CoreModelViewer from '../core';
 
 extend({ OrbitControls });
 
@@ -113,18 +113,18 @@ const LoopControls = ({ loopMode, setLoopMode }) => (
   </BaseButton>
 );
 
-const ClipActionControls = ({ clipActions, clipActionIndex, setClipAction }) => {
-  const clipActionName = clipActions.length && clipActions[clipActionIndex]._clip.name;
+const ClipActionControls = ({ animations, animationIndex, setAnimationIndex }) => {
+  const clipActionName = animations.length && animations[animationIndex]._clip.name;
   const [open, setOpen] = useState(false);
 
   return (
     <div style={{ position: 'relative' }}>
       {open && (
         <div style={{ position: 'absolute', bottom: 0, right: 0, marginBottom: '32px', background: 'rgba(0, 0, 0, 0.5)', minHeight: '32px', display: 'flex', flexDirection: 'column', padding: '4px', justifyContent: 'center' }}>
-          {clipActions.map((clipAction, index) => (
+          {animations.map((clipAction, index) => (
             <BaseButton
               onClick={() => {
-                setClipAction(index);
+                setAnimationIndex(index);
                 setOpen(false);
               }}
             >
@@ -143,8 +143,8 @@ const ClipActionControls = ({ clipActions, clipActionIndex, setClipAction }) => 
 };
 
 const ControlBar = ({
-  clipActions,
-  clipActionIndex,
+  animations,
+  animationIndex,
   progress,
   timeScale,
   loopMode,
@@ -154,7 +154,7 @@ const ControlBar = ({
   seek,
   setTimeScale,
   setLoopMode,
-  setClipAction
+  setAnimationIndex
 }) => (
   <div style={{ display: 'flex', width: '100%', padding: '8px', background: 'rgba(0, 0, 0, 0.5)' }}>
     <PlayButton play={play} pause={pause} isPlaying={isPlaying} />
@@ -163,7 +163,7 @@ const ControlBar = ({
 
     <LoopControls loopMode={loopMode} setLoopMode={setLoopMode} />
 
-    <ClipActionControls clipActions={clipActions} clipActionIndex={clipActionIndex} setClipAction={setClipAction} />
+    <ClipActionControls animations={animations} animationIndex={animationIndex} setAnimationIndex={setAnimationIndex} />
 
     <div style={{ position: 'relative', width: '100%', display: 'flex', marginLeft: '8px' }}>
       <ProgressBar
@@ -185,14 +185,14 @@ const ControlBar = ({
 );
 
 const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
-  <BaseModelViewer src={src} type={type}>
+  <CoreModelViewer src={src} type={type}>
     {({
       model,
       modelCenter,
       modelProgress,
       modelError,
-      clipActions,
-      clipActionIndex,
+      animations,
+      animationIndex,
       isPlaying,
       loopMode,
       timeScale,
@@ -202,7 +202,7 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
       seek,
       setLoopMode,
       setTimeScale,
-      setClipAction,
+      setAnimationIndex,
     }) => (
       <div
         style={{
@@ -257,22 +257,22 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
         </div>
 
         <ControlBar
-          clipActions={clipActions}
-          clipActionIndex={clipActionIndex}
           progress={animationProgress}
-          loopMode={loopMode}
-          timeScale={timeScale}
           isPlaying={isPlaying}
+          animations={animations}
+          animationIndex={animationIndex}
+          setAnimationIndex={setAnimationIndex}
+          loopMode={loopMode}
+          setLoopMode={setLoopMode}
+          timeScale={timeScale}
+          setTimeScale={setTimeScale}
           play={play}
           pause={pause}
           seek={seek}
-          setTimeScale={setTimeScale}
-          setLoopMode={setLoopMode}
-          setClipAction={setClipAction}
         />
       </div>
     )}
-  </BaseModelViewer>
+  </CoreModelViewer>
 );
 
 ModelViewer.defaultProps = {
