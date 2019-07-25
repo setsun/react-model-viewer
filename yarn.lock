@@ -7196,10 +7196,6 @@ react-three-fiber@^2.2.13:
     resize-observer-polyfill "^1.5.1"
     scheduler "0.13.3"
 
-react-three-hooks@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/react-three-hooks/-/react-three-hooks-0.1.2.tgz#996f11f2647826f1180f0ad31edcde83ebbbb46c"
-
 react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"

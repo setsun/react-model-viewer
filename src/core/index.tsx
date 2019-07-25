@@ -1,4 +1,5 @@
-import { useModelLoader, useAnimationMixer } from 'react-three-hooks';
+import useModelLoader from '../useModelLoader';
+import useAnimationMixer from '../useAnimationMixer';
 
 type Props = {
   src: string;
@@ -6,7 +7,7 @@ type Props = {
   children?: Function;
 };
 
-const BaseModelViewer = ({ src, type, children }: Props) => {
+const CoreModelViewer = ({ src, type, children }: Props) => {
   const {
     model,
     modelCenter,
@@ -15,8 +16,8 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
   } = useModelLoader(type, src);
 
   const {
-    clipActions,
-    clipActionIndex,
+    animations,
+    animationIndex,
     isPlaying,
     loopMode,
     timeScale,
@@ -26,7 +27,7 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
     seek,
     setLoopMode,
     setTimeScale,
-    setClipAction,
+    setAnimationIndex,
   } = useAnimationMixer(model);
 
   return children({
@@ -34,8 +35,8 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
     modelCenter,
     modelProgress,
     modelError,
-    clipActions,
-    clipActionIndex,
+    animations,
+    animationIndex,
     isPlaying,
     loopMode,
     timeScale,
@@ -45,8 +46,8 @@ const BaseModelViewer = ({ src, type, children }: Props) => {
     seek,
     setLoopMode,
     setTimeScale,
-    setClipAction,
+    setAnimationIndex,
   });
 };
 
-export default BaseModelViewer;
+export default CoreModelViewer;
