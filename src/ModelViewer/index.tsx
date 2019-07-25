@@ -83,7 +83,7 @@ const SpeedControls = ({ timeScale, setTimeScale }) => (
   <>
     <BaseButton
       onClick={() => {
-        setTimeScale(Math.max(-0.25, timeScale - 0.25));
+        setTimeScale(Math.max(0.25, timeScale - 0.25));
       }}
     >
       <MinusCircle size={16} />
