@@ -18,7 +18,7 @@ const CoreModelViewer = ({ src, type, children }: Props) => {
   const {
     animations,
     animationIndex,
-    isPlaying,
+    playing,
     loopMode,
     timeScale,
     progress: animationProgress,
@@ -37,7 +37,7 @@ const CoreModelViewer = ({ src, type, children }: Props) => {
     modelError,
     animations,
     animationIndex,
-    isPlaying,
+    playing,
     loopMode,
     timeScale,
     animationProgress,

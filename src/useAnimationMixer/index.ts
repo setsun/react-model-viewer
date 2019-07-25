@@ -28,7 +28,7 @@ function setAnimationTime(
 function startAnimationLoop (
   mixer: THREE.AnimationMixer,
   animation: THREE.AnimationAction,
-  setIsPlaying: Function,
+  setPlaying: Function,
   setProgress: Function,
 ) {
   let lastTime = 0;
@@ -36,7 +36,7 @@ function startAnimationLoop (
   const tick = (timestamp) => {
     // if the animation is no longer playing, then cancel loop
     if (animation.paused) {
-      setIsPlaying(false);
+      setPlaying(false);
       setProgress(0);
       lastTime = 0;
       return;
@@ -99,14 +99,12 @@ const useStartAnimation = ({
   animation,
   timeScale,
   loopMode,
-  isPlaying,
+  playing,
   setProgress,
-  setIsPlaying,
+  setPlaying,
 }) => {
   useEffect(() => {
-    if (!mixer) return;
-    if (!animation) return;
-    if (!isPlaying) return;
+    if (!mixer || !animation || !playing) return;
 
     // stop any active animations
     stopAnimationLoop();
@@ -123,17 +121,17 @@ const useStartAnimation = ({
       .play();
 
     // kick off the loop
-    startAnimationLoop(mixer, animation, setIsPlaying, setProgress);
+    startAnimationLoop(mixer, animation, setPlaying, setProgress);
 
     // cleanup step, when effect unmounts
     return () => {
       stopAnimationLoop();
     }
-  }, [mixer, isPlaying, animation]);
+  }, [mixer, playing, animation]);
 }
 
 const useAnimationMixer = (model) => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [playing, setPlaying] = useState(true);
   const [loopMode, setLoopMode] = useState(LoopMode.repeat);
   const [timeScale, setTimeScale] = useState(1);
   const [progress, setProgress] = useState(0);
@@ -148,11 +146,11 @@ const useAnimationMixer = (model) => {
     mixer,
     progress,
     animation,
-    isPlaying,
+    playing,
     loopMode,
     timeScale,
     setProgress,
-    setIsPlaying,
+    setPlaying,
   });
 
   // change loop mode
@@ -177,18 +175,18 @@ const useAnimationMixer = (model) => {
       stopAnimationLoop();
       setAnimationIndex(index);
     },
-    isPlaying,
+    playing,
     // set state callbacks
     play: () => {
-      setIsPlaying(true);
+      setPlaying(true);
     },
     pause: () => {
       stopAnimationLoop();
-      setIsPlaying(false);
+      setPlaying(false);
     },
     seek: (progress) => {
       stopAnimationLoop();
-      setIsPlaying(false);
+      setPlaying(false);
       setProgress(progress);
       setAnimationTime(mixer, animation, progress);
     },
