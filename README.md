@@ -12,10 +12,15 @@ Supports:
 - Playback speed controls
 
 ### Install
-
 ```
+# main package
 npm i react-model-viewer
+
+# peer dependencies
+npm i react react-dom three
 ```
+
+Bundle size: https://bundlephobia.com/result?p=react-model-viewer
 
 ### Example
 http://setsun.io/react-model-viewer/?path=/story/react-model-viewer--gtlf-sonic
