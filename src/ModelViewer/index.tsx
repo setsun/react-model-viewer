@@ -13,6 +13,8 @@ import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Repeat from 'react-feather/dist/icons/repeat';
 
 import CoreModelViewer from '../core';
+import { Container, Button, Progress } from './components';
+import { ellipsis } from './styles';
 
 extend({ OrbitControls });
 
@@ -22,37 +24,11 @@ type Props = {
   aspect?: [number, number];
 };
 
-const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden'
-};
-
-const BaseButton = ({ children, style, ...rest }: any) => (
-  <button
-    style={{ background: 'none', border: 'none', margin: 0, display: 'flex', alignItems: 'center', color: '#fff', ...style }}
-    {...rest}
-  >
-    {children}
-  </button>
-);
-
-const ProgressBar = ({ progress, style, ...rest }) => (
-  <progress
-    max={100}
-    value={progress}
-    style={{ display: 'block', ...style }}
-    {...rest}
-  />
-);
-
 function CameraControls(props) {
   const controls = useRef();
   const { camera } = useThree();
 
-  useRender(() => {
-    controls.current && controls.current.update();
-  }, false);
+  useRender(() => controls.current && controls.current.update(), false);
 
   return <orbitControls ref={controls} args={[camera]} {...props} />;
 }
@@ -62,45 +38,44 @@ const SeekButton = ({ progress }) => (
     style={{
       position: 'absolute',
       left: `calc(${progress}% - 4px)`,
+      padding: 0,
       height: '100%',
+      width: '8px',
       border: 'none',
       borderRadius: '3px',
-      padding: 0,
-      margin: 0,
-      width: '8px',
       cursor: 'pointer',
     }}
   />
 );
 
-const PlayButton = ({ isPlaying, play, pause }) => (
-  <BaseButton onClick={isPlaying ? pause : play}>
-    {isPlaying ? <PauseCircle size={16} /> : <PlayCircle size={16} />}
-  </BaseButton>
+const PlayButton = ({ playing, play, pause }) => (
+  <Button onClick={playing ? pause : play}>
+    {playing ? <PauseCircle size={16} /> : <PlayCircle size={16} />}
+  </Button>
 );
 
 const SpeedControls = ({ timeScale, setTimeScale }) => (
   <>
-    <BaseButton
+    <Button
       onClick={() => {
         setTimeScale(Math.max(0.25, timeScale - 0.25));
       }}
     >
       <MinusCircle size={16} />
-    </BaseButton>
+    </Button>
 
-    <BaseButton
+    <Button
       onClick={() => {
         setTimeScale(Math.min(5, timeScale + 0.25));
       }}
     >
       <PlusCircle size={16} />
-    </BaseButton>
+    </Button>
   </>
 );
 
 const LoopControls = ({ loopMode, setLoopMode }) => (
-  <BaseButton
+  <Button
     onClick={() => {
       const nextLoopMode = loopMode === THREE.LoopRepeat ? THREE.LoopOnce : THREE.LoopRepeat;
       setLoopMode(nextLoopMode);
@@ -110,7 +85,7 @@ const LoopControls = ({ loopMode, setLoopMode }) => (
       size={16}
       color={loopMode === THREE.LoopRepeat ? 'currentColor' : '#bebebe'}
     />
-  </BaseButton>
+  </Button>
 );
 
 const ClipActionControls = ({ animations, animationIndex, setAnimationIndex }) => {
@@ -118,27 +93,27 @@ const ClipActionControls = ({ animations, animationIndex, setAnimationIndex }) =
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Container position="relative">
       {open && (
-        <div style={{ position: 'absolute', bottom: 0, right: 0, marginBottom: '32px', background: 'rgba(0, 0, 0, 0.5)', minHeight: '32px', display: 'flex', flexDirection: 'column', padding: '4px', justifyContent: 'center' }}>
+        <Container position="absolute" direction="column" justify="center" bottom={0} right={0} style={{ marginBottom: '32px', background: 'rgba(0, 0, 0, 0.5)', minHeight: '32px', padding: '4px' }}>
           {animations.map((clipAction, index) => (
-            <BaseButton
+            <Button
               onClick={() => {
                 setAnimationIndex(index);
                 setOpen(false);
               }}
             >
               {clipAction._clip.name}
-            </BaseButton>
+            </Button>
           ))}
-        </div>
+        </Container>
       )}
 
-      <BaseButton onClick={() => setOpen(!open)}>
-        <span style={{ width: '64px', ...ellipsisStyle }}>{clipActionName}</span>
+      <Button onClick={() => setOpen(!open)}>
+        <span style={{ width: '64px', ...ellipsis }}>{clipActionName}</span>
         {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </BaseButton>
-    </div>
+      </Button>
+    </Container>
   )
 };
 
@@ -148,7 +123,7 @@ const ControlBar = ({
   progress,
   timeScale,
   loopMode,
-  isPlaying,
+  playing,
   play,
   pause,
   seek,
@@ -156,8 +131,8 @@ const ControlBar = ({
   setLoopMode,
   setAnimationIndex
 }) => (
-  <div style={{ display: 'flex', width: '100%', padding: '8px', background: 'rgba(0, 0, 0, 0.5)' }}>
-    <PlayButton play={play} pause={pause} isPlaying={isPlaying} />
+  <Container width="100%" style={{ padding: '8px', background: 'rgba(0, 0, 0, 0.5)' }}>
+    <PlayButton play={play} pause={pause} playing={playing} />
 
     <SpeedControls timeScale={timeScale} setTimeScale={setTimeScale} />
 
@@ -165,8 +140,8 @@ const ControlBar = ({
 
     <ClipActionControls animations={animations} animationIndex={animationIndex} setAnimationIndex={setAnimationIndex} />
 
-    <div style={{ position: 'relative', width: '100%', display: 'flex', marginLeft: '8px' }}>
-      <ProgressBar
+    <Container position="relative" width="100%" style={{ marginLeft: '8px' }}>
+      <Progress
         progress={progress}
         style={{ width: '100%', cursor: 'pointer' }}
         onClick={e => {
@@ -180,8 +155,8 @@ const ControlBar = ({
       />
 
       <SeekButton progress={progress} />
-    </div>
-  </div>
+    </Container>
+  </Container>
 );
 
 const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
@@ -193,7 +168,7 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
       modelError,
       animations,
       animationIndex,
-      isPlaying,
+      playing,
       loopMode,
       timeScale,
       animationProgress,
@@ -204,37 +179,27 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
       setTimeScale,
       setAnimationIndex,
     }) => (
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <Container position="relative" align="center" direction="column" justify="center">
         {modelProgress < 100 && !modelError && (
-          <ProgressBar
+          <Progress
             progress={modelProgress}
             style={{ position: 'absolute' }}
           />
         )}
 
-        <div
+        <Container
+          position="relative"
+          width="100%"
           style={{
-            position: 'relative',
             paddingBottom: `${(aspect[1] / aspect[0]) * 100}%`,
-            width: '100%',
           }}
         >
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-            }}
+          <Container
+            position="absolute"
+            top={0}
+            left={0}
+            width="100%"
+            height="100%"
           >
             <Canvas {...rest}>
               <CameraControls
@@ -253,12 +218,12 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
 
               {model && <primitive object={model.scene || model} />}
             </Canvas>
-          </div>
-        </div>
+          </Container>
+        </Container>
 
         <ControlBar
           progress={animationProgress}
-          isPlaying={isPlaying}
+          playing={playing}
           animations={animations}
           animationIndex={animationIndex}
           setAnimationIndex={setAnimationIndex}
@@ -270,7 +235,7 @@ const ModelViewer = ({ src, type, aspect, ...rest }: Props) => (
           pause={pause}
           seek={seek}
         />
-      </div>
+      </Container>
     )}
   </CoreModelViewer>
 );
