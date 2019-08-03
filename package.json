@@ -15,12 +15,12 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@storybook/addon-actions": "^5.1.9",
-    "@storybook/addon-info": "^5.1.9",
-    "@storybook/addon-knobs": "^5.1.9",
-    "@storybook/addon-links": "^5.1.9",
-    "@storybook/addon-storysource": "^5.1.9",
-    "@storybook/react": "^5.1.9",
+    "@storybook/addon-actions": "^5.1.10",
+    "@storybook/addon-info": "^5.1.10",
+    "@storybook/addon-knobs": "^5.1.10",
+    "@storybook/addon-links": "^5.1.10",
+    "@storybook/addon-storysource": "^5.1.10",
+    "@storybook/react": "^5.1.10",
     "@storybook/storybook-deployer": "^2.8.1",
     "babel-eslint": "10.0.2",
     "babel-loader": "8.0.6",
@@ -38,12 +38,12 @@
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.2.13",
-    "storybook-readme": "^5.0.5",
+    "react-three-fiber": "^2.2.14",
+    "storybook-readme": "^5.0.6",
     "three": "^0.106.2",
     "typescript": "^3.5.3",
     "url-loader": "^2.1.0",
-    "webpack": "^4.37.0",
+    "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "react-feather": "^2.0.3",
-    "react-three-fiber": "^2.2.13"
+    "react-three-fiber": "^2.2.14"
   }
 }
