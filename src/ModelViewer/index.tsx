@@ -3,7 +3,6 @@ import * as React from 'react';
 import { useState, useRef } from 'react';
 import { Canvas, useThree, useRender, extend } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
 import PlayCircle from 'react-feather/dist/icons/play-circle';
 import PauseCircle from 'react-feather/dist/icons/pause-circle';
 import PlusCircle from 'react-feather/dist/icons/plus-circle';

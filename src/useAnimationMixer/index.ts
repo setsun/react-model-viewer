@@ -173,6 +173,8 @@ const useAnimationMixer = (model) => {
     animationIndex,
     setAnimationIndex: (index) => {
       stopAnimationLoop();
+      setProgress(0);
+      setAnimationTime(mixer, animation, 0);
       setAnimationIndex(index);
     },
     playing,
