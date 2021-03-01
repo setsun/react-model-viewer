@@ -40,7 +40,7 @@
     "react-dom": "^16.11.0",
     "react-three-fiber": "3.0.6",
     "storybook-readme": "^5.0.8",
-    "three": "^0.109.0",
+    "three": "^0.125.0",
     "typescript": "^3.6.4",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.2",
@@ -49,7 +49,7 @@
   "peerDependencies": {
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "three": "^0.109.0"
+    "three": "^0.125.0"
   },
   "dependencies": {
     "react-feather": "^2.0.3",
