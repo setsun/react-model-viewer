@@ -4396,11 +4396,10 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-eslint-config-eslint@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-eslint/-/eslint-config-eslint-5.0.1.tgz#c9e5f5213210c457b480c594980b211311a38a3a"
-  dependencies:
-    js-yaml "^3.5.1"
+eslint-config-eslint@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-eslint/-/eslint-config-eslint-6.0.0.tgz#4f5f18c63fd4009ee3f017c731e981d06c31f212"
+  integrity sha512-dZ+eNtuU8V6+SbXgXjUf11/7Bv4EXzIqn4DxA3Ou1YklwFz31veKYTjzF9uYejUQQjOMpLHTEKWMGSmHAoh4wg==
 
 eslint-config-prettier@6.4.0:
   version "6.4.0"
@@ -5986,7 +5985,7 @@ js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.13.1, js-yaml@^3.5.1, js-yaml@^3.9.0:
+js-yaml@^3.13.1, js-yaml@^3.9.0:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   dependencies:

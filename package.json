@@ -27,7 +27,7 @@
     "babel-preset-setsun": "2.4.8",
     "cross-env": "6.0.3",
     "eslint": "^6.5.1",
-    "eslint-config-eslint": "5.0.1",
+    "eslint-config-eslint": "6.0.0",
     "eslint-config-prettier": "6.4.0",
     "eslint-config-setsun": "^2.4.7",
     "eslint-plugin-import": "2.18.2",
