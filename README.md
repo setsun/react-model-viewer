@@ -23,7 +23,7 @@ npm i react react-dom three
 Bundle size: https://bundlephobia.com/result?p=react-model-viewer
 
 ### Example
-http://setsun.io/react-model-viewer/?path=/story/react-model-viewer--gtlf-sonic
+http://setsun.github.io/react-model-viewer/?path=/story/react-model-viewer--gtlf-sonic
 
 ![example](https://user-images.githubusercontent.com/4651424/61834820-64e2b180-ae47-11e9-85d4-cd69d02b7dd6.gif)
 
